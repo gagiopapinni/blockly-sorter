@@ -68,6 +68,8 @@ Sorter.App = class App {
       });
 
       this._resize();
+
+      this._shuffleVisualArray();
       
     }
 
@@ -112,6 +114,11 @@ Sorter.App = class App {
          
          return array;
 
+    }
+    _shuffleVisualArray(){
+         
+         this.visual_array.reset(this._generateRandomArray(this.visual_array.length));
+  
     }
     _alert(msg){
     
@@ -229,7 +236,7 @@ Sorter.App = class App {
    
          shuffle.addEventListener("click",()=>{
 
-                     array.reset(this._generateRandomArray(array.length));
+                     this._shuffleVisualArray();
                      
          });
 
