@@ -1,8 +1,8 @@
 # blockly-sorter
 The project is devoted to basic sorting algorithms,\
 It pretends to be a place where students(or anyone else) would feel comfortable
-to fiddle with algorithms to understand them better.
-
+to fiddle with algorithms to understand them better. 
+(demo: https://gagiopapinni.github.io/blockly-sorter/ )
 
 ### Building:
 
