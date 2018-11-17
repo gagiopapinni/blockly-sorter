@@ -38,12 +38,7 @@ Sorter.VisualArray = class VisualArray extends  goog.events.EventTarget {
         this._TRUE_SIZES = this._determineSizes( options.width, options.height )        
 
         
-
-        this._stage = new PIXI.Container();
-
-        this._graphics = new PIXI.Graphics();
-        
-        this._stage.addChild(this._graphics);  
+        this._graphics = new PIXI.Graphics();     
 
 
         this._font_styles = {
@@ -157,7 +152,7 @@ Sorter.VisualArray = class VisualArray extends  goog.events.EventTarget {
     }
     reset( array = [] ){
         
-        if(this.paused) this.paused = false;     
+        this.paused = false;     
 
         this._animation_composers_queue = [];
 
@@ -450,7 +445,7 @@ Sorter.VisualArray = class VisualArray extends  goog.events.EventTarget {
 
      render(canvas_renderer){  
        
-        canvas_renderer.render(this._stage);
+        canvas_renderer.render(this._graphics);
      
      }
 
