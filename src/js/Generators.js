@@ -7,9 +7,9 @@ goog.require("blockly_generators_compressed");
 
 Sorter.Generators.init = function init ( visual_array ){
 
+   
 
-
-   let context = {
+   const context = {
 
      array: visual_array.toPlainArray(),
 
@@ -21,7 +21,7 @@ Sorter.Generators.init = function init ( visual_array ){
            [ this.array[a],this.array[b] ] = [ this.array[b],this.array[a] ];
 
          visual_array.swap(a,b); 
-       
+
      },
       
      get_array_value(index){
@@ -33,11 +33,36 @@ Sorter.Generators.init = function init ( visual_array ){
          return this.array[index];
 
      },
+
+
+     highlighted_indices : [],
+
+     highlight(idx1,idx2){
+         try{
+
+           visual_array.highlight([idx1,idx2]);
+           this.highlighted_indices = [idx1,idx2];
+
+         }catch(e){/*this should stay quiet*/}
+
+         return true;    
+     },
+
+     unhighlightPrevious(){
+
+         visual_array.highlight( this.highlighted_indices, false );
+
+         this.highlighted_indices = [];
+
+         return true;
+     }
+     
     
    }
    
    visual_array.listen('onReset',()=>{ context.array = visual_array.toPlainArray(); })
 
+   visual_array.listen('onAnimationComplete',()=>{ context.unhighlightPrevious(); })
 
    Blockly.JavaScript['length'] = function(block) {
 
@@ -68,6 +93,41 @@ Sorter.Generators.init = function init ( visual_array ){
 
    };
    
+   Blockly.JavaScript['logic_compare'] = function(block) {
+     
+
+      //--- Default Comparison operator.
+      var OPERATORS = {
+       'EQ': '==',
+       'NEQ': '!=',
+       'LT': '<',
+       'LTE': '<=',
+       'GT': '>',
+       'GTE': '>='
+      };
+      var operator = OPERATORS[block.getFieldValue('OP')];
+      var order = (operator == '==' || operator == '!=') ?
+            Blockly.JavaScript.ORDER_EQUALITY : Blockly.JavaScript.ORDER_RELATIONAL;
+      var argument0 = Blockly.JavaScript.valueToCode(block, 'A', order) || '0';
+      var argument1 = Blockly.JavaScript.valueToCode(block, 'B', order) || '0';
+      var code = argument0 + ' ' + operator + ' ' + argument1;
+      //---
+
+      const input_A_block = block.getInputTargetBlock('A'),
+            input_B_block = block.getInputTargetBlock('B');
+
+      if(input_A_block.type === 'getter' && input_B_block.type === 'getter'){
+
+        const idx1 = Blockly.JavaScript.valueToCode(input_A_block, 'index', Blockly.JavaScript.ORDER_ADDITION),
+              idx2 = Blockly.JavaScript.valueToCode(input_B_block, 'index', Blockly.JavaScript.ORDER_ADDITION);
+
+        code = "( this.unhighlightPrevious() && this.highlight("+idx1+","+idx2+") && ("+code+") )";
+
+      }
+
+      return [code, order];
+   };
+
 
    return context;
 
