@@ -22,7 +22,7 @@ Sorter.VisualArray = class VisualArray extends  goog.events.EventTarget {
                
                font: options.font_color || 0x9f9aa4,//0xae26ed,
                cell: options.cell_color || 0x1f2421,//0xEC555B,//0x231f20,//0xfed766,// 0xFFA153,
-
+               frame: options.frame_color || 0xE73446,
         };
 
         this._borders = {
@@ -139,11 +139,13 @@ Sorter.VisualArray = class VisualArray extends  goog.events.EventTarget {
 
          for(let i = 0;i < this.length; i++){
 
-               let value = this._cells[i].getChildByName('value');
+               const value = this._cells[i].getChildByName('value'),
+                     frame = this._cells[i].getChildByName('frame');
            
                if( array[i] === void(0) ) value.text = '0';
-
                else value.text = array[i].toString();
+
+               frame.alpha = 0;
 
          }
 
@@ -198,9 +200,57 @@ Sorter.VisualArray = class VisualArray extends  goog.events.EventTarget {
 
     }
 
+    _validateIndex( index ){
+   
+        if( index >= this._length || index < 0  ) return false;
+        return true; 
+
+    }
+
+    highlight (indices = [],status = true){
+
+        indices = [].concat(indices);
+
+        if(!indices.length) return;
+
+        status = Boolean(status);
+
+        for(let index in indices)
+
+            if( !this._validateIndex(indices[index]) )
+                throw new RangeError("highlight("+indices[index]+"); - invalid index");
+        
+
+        const animation_composer = () => {        
+
+            const animation =  new TimelineMax({paused:true}),
+
+                  duration = .5, frames = [];       
+
+
+            for( let key in indices )
+            
+                frames.push(this._cells[indices[key]].getChildByName('frame'));
+            
+
+            animation.to(frames,duration,{ alpha: Number(status) })
+               
+            animation.eventCallback('onComplete',() => {
+           
+                 this._manageQueue(); 
+
+            });
+      
+            return animation;
+        }
+
+        this._pushQueue(animation_composer);
+         
+
+    }
     swap ( index_a , index_b ) { 
         
-        if( index_a >= this._length || index_b >= this._length || index_a < 0 || index_b < 0 ) 
+        if( !this._validateIndex(index_a) || !this._validateIndex(index_b) )
  
               throw new RangeError("swap( "+index_a+" , "+index_b+" ); - invalid indices");
 
@@ -400,21 +450,30 @@ Sorter.VisualArray = class VisualArray extends  goog.events.EventTarget {
     }
     _initCells (){
        
+        const cell_w = this._TRUE_SIZES.cell_width,
+              cell_h = this._TRUE_SIZES.cell_height;
+
         for(let i = 0;i < this.length ;i++){
 
-          let cell = new PIXI.Graphics(),
+          const cell = new PIXI.Graphics(),
 
-              value = new PIXI.Text( i.toString(), this._font_styles.cell );
+                frame = new PIXI.Graphics(),
+
+                value = new PIXI.Text( i.toString(), this._font_styles.cell );
               
           value.name = 'value';
-
           value.style.fontSize = this._TRUE_SIZES.cell_font_size;
-
           cell.addChild(value);
+
+          frame.name = 'frame';
+          frame.alpha = 0;
+          frame.lineStyle(cell_w/9, this._colors.frame);
+          frame.drawRoundedRect(0,0,cell_w,cell_h,4);
+          cell.addChild( frame );
 
           cell.beginFill(this._colors.cell);
 
-          cell.drawRoundedRect(0,0,this._TRUE_SIZES.cell_width,this._TRUE_SIZES.cell_height,4);
+          cell.drawRoundedRect(0,0,cell_w,cell_h,4);
 
           this._graphics.addChild( cell );
 
