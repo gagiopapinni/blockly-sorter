@@ -409,6 +409,8 @@ Sorter.VisualArray = class VisualArray extends  goog.events.EventTarget {
 
               sizes.index_font_size = sizes.cell_font_size / 1.6;
 
+              sizes.frame = sizes.cell_width/10;
+
               if(sizes.cell_height + sizes.index_font_size > height)
 
                  sizes.cell_height = sizes.cell_font_size = sizes.index_font_size = height/2;
@@ -467,7 +469,7 @@ Sorter.VisualArray = class VisualArray extends  goog.events.EventTarget {
 
           frame.name = 'frame';
           frame.alpha = 0;
-          frame.lineStyle(cell_w/9, this._colors.frame);
+          frame.lineStyle(this._TRUE_SIZES.frame, this._colors.frame);
           frame.drawRoundedRect(0,0,cell_w,cell_h,4);
           cell.addChild( frame );
 
