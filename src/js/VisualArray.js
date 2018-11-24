@@ -441,7 +441,7 @@ Sorter.VisualArray = class VisualArray extends  goog.events.EventTarget {
 
            [cell,index] = [this._cells[i],this._indices[i]]         
 
-           cell.x = i*(this._TRUE_SIZES.gap + this._TRUE_SIZES.cell_width);
+           cell.x = this._TRUE_SIZES.frame + i*(this._TRUE_SIZES.gap + this._TRUE_SIZES.cell_width);
 
            cell.y = this._borders.height - this._TRUE_SIZES.cell_height - this._TRUE_SIZES.index_font_size ;
   
