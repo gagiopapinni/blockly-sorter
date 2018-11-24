@@ -33,36 +33,42 @@ Sorter.Generators.init = function init ( visual_array ){
          return this.array[index];
 
      },
-
-
-     highlighted_indices : [],
+ 
+     is_highlighted: false,
 
      highlight(idx1,idx2){
+
          try{
 
            visual_array.highlight([idx1,idx2]);
-           this.highlighted_indices = [idx1,idx2];
+           this.is_highlighted = true;
 
          }catch(e){/*this should stay quiet*/}
 
          return true;    
      },
+     unhighlightAll(){
 
-     unhighlightPrevious(){
+         if(this.is_highlighted){
 
-         visual_array.highlight( this.highlighted_indices, false );
+           visual_array.highlight( [...this.array.keys()] , false );
+           this.is_highlighted = false;
 
-         this.highlighted_indices = [];
+         }
 
          return true;
-     }
-     
+     },
+   
     
    }
    
+
+
    visual_array.listen('onReset',()=>{ context.array = visual_array.toPlainArray(); })
 
-   visual_array.listen('onAnimationComplete',()=>{ context.unhighlightPrevious(); })
+   visual_array.listen('onAnimationComplete',()=>{ context.unhighlightAll(); })
+
+
 
    Blockly.JavaScript['length'] = function(block) {
 
@@ -121,7 +127,7 @@ Sorter.Generators.init = function init ( visual_array ){
         const idx1 = Blockly.JavaScript.valueToCode(input_A_block, 'index', Blockly.JavaScript.ORDER_ADDITION),
               idx2 = Blockly.JavaScript.valueToCode(input_B_block, 'index', Blockly.JavaScript.ORDER_ADDITION);
 
-        code = "( this.unhighlightPrevious() && this.highlight("+idx1+","+idx2+") && ("+code+") )";
+        code = "(this.unhighlightAll() && this.highlight("+idx1+","+idx2+") && ("+code+"))";
 
       }
 
