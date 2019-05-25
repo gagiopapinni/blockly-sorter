@@ -14,12 +14,12 @@ Blockly.defineBlocksWithJsonArray([
   "inputsInline": true,
   "output": "Number",
   "colour": 280,
-  "tooltip": "Returns the list's length",
+  "tooltip": "Returns number of elements in the list",
   "helpUrl": ""
  },
  {
   "type": "swap",
-  "message0": "Swap %1 %2  with  %3 %4 ",
+  "message0": "Swap #%1 %2  with  #%3 %4 ",
   "args0": [
     {
       "type": "input_dummy"
@@ -46,7 +46,7 @@ Blockly.defineBlocksWithJsonArray([
  },
  {
   "type": "getter",
-  "message0": "get %1 %2  element",
+  "message0": "value at #%1 %2 ",
   "args0": [
     {
       "type": "input_dummy"
