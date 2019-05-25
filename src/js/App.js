@@ -15,7 +15,7 @@ goog.require("Sorter.Generators");
 goog.require("Sorter.VisualArray");
 goog.require("Sorter.ToolBox");
 goog.require("Sorter.Controls");
-
+goog.require("Sorter.AboutMenu");
 
 Sorter.App = class App {
     
@@ -44,7 +44,8 @@ Sorter.App = class App {
 
       this.controls = this._injectControls();
 
-
+      this._injectDescriptions()
+      
       this.is_executing = false;
 
       this.visual_array.listen('onAnimationStart',()=>{ this.is_executing = true; })
@@ -158,11 +159,17 @@ Sorter.App = class App {
 
                row = goog.dom.createDom('div',{'class':'row justify-content-center no-gutters'}),
 
+               col_0 = goog.dom.createDom('div',{'class':'col-12 col-xl-7 no-gutters',
+                                                 'id':'col_1_'+ Math.random().toString(36).substr(2, 9),
+                                                }),
+
+               devider_0 = goog.dom.createDom('div',{'class':'w-100'}),
+
                col_1 = goog.dom.createDom('div',{'class':'col-auto no-gutters',
                                                  'id':'col_1_'+ Math.random().toString(36).substr(2, 9),
                                                 }),
 
-               devider = goog.dom.createDom('div',{'class':'w-100'}),
+               devider_1 = goog.dom.createDom('div',{'class':'w-100'}),
 
                col_2 = goog.dom.createDom('div',{'class':'col-12 col-xl-9 no-gutters ',
                                                  'id':'col_2_' + Math.random().toString(36).substr(2, 9),
@@ -170,17 +177,24 @@ Sorter.App = class App {
  
          document.body.appendChild(container);
          container.appendChild(row);
+         row.appendChild(col_0);
+         row.appendChild(devider_0);
          row.appendChild(col_1);
-         row.appendChild(devider);
+         row.appendChild(devider_1);
          row.appendChild(col_2);
     
          return {  container: container,
+                   column0: col_0,
                    column1: col_1,
                    column2: col_2  };
 
      }
-  
-    
+    _injectDescriptions(){
+         let obj = new Sorter.AboutMenu();
+
+         this.grid.column0.appendChild( obj.container );
+         
+     }
     _injectControls(){
        
          const controls = new Sorter.Controls(),
