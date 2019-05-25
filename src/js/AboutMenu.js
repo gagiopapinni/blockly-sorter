@@ -15,25 +15,25 @@ Sorter.AboutMenu = class AboutMenu {
          const instance_id = Math.random().toString(36).substr(2, 9),
                   
                element =   
-            `<div >
-               <div class="  border  bg-secondary  "   >
-                 <button class="btn btn-block border bg-white" data-toggle="collapse" data-target="#menu_body_`+instance_id+`">
-                           About.
-                 </button>
-               </div>
-               <div class="  border collapse" id="menu_body_`+instance_id+`"  >
+            `<div class = 'mb-4' >
+
+               <button class="btn btn-block border-light  bg-light text-black" style="opacity:1;" data-toggle="collapse" data-target="#menu_body_`+instance_id+`">
+                          <b> About. </b>
+               </button>
+               
+               <div class="  border collapse bg-dark text-center " id="menu_body_`+instance_id+`"  >
   
-                  <button class="btn m-2 my-3 btn-secondary" data-toggle="modal" id="how_to_use_`+instance_id+`" >
-                           How to use
+                  <button class="btn m-2 my-3 btn-danger" data-toggle="modal" id="how_to_use_`+instance_id+`" >
+                          <b> How to use </b>
                   </button>
-                  <button class="btn m-2 my-3 btn-secondary" data-toggle="modal" id="bubble_sort_`+instance_id+`" >
-                           Bubble Sort
+                  <button class="btn m-2 my-3 btn-secondary " data-toggle="modal" id="bubble_sort_`+instance_id+`" >
+                           <b> Bubble Sort </b>
                   </button>
-                  <button class="btn m-2 my-3 btn-secondary" data-toggle="modal" id="insertion_sort_`+instance_id+`">
-                         Insertion Sort
+                  <button class="btn m-2 my-3 btn-secondary " data-toggle="modal" id="insertion_sort_`+instance_id+`">
+                        <b> Insertion Sort </b>
                   </button>
-                  <button class="btn m-2 my-3 btn-secondary" data-toggle="modal" id="selection_sort_`+instance_id+`">
-                         Selection Sort
+                  <button class="btn m-2 my-3 btn-secondary " data-toggle="modal" id="selection_sort_`+instance_id+`">
+                        <b> Selection Sort </b>
                   </button>
                </div>
 

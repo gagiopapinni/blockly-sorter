@@ -159,7 +159,7 @@ Sorter.App = class App {
 
                row = goog.dom.createDom('div',{'class':'row justify-content-center no-gutters'}),
 
-               col_0 = goog.dom.createDom('div',{'class':'col-12 col-xl-7 no-gutters',
+               col_0 = goog.dom.createDom('div',{'class':'col-12 no-gutters',
                                                  'id':'col_1_'+ Math.random().toString(36).substr(2, 9),
                                                 }),
 
