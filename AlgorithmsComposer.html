@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" class='none-select'>
+
+   <head>
+
+      <meta charset="UTF-8" >
+      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+      <title>Algorithms composer</title>
+
+      <link rel="icon" type="image/x-icon" href="favicon.ico" />
+      <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
+      <link rel="stylesheet" href="src/css/style.css">
+
+      <script src="node_modules/blockly/blockly_uncompressed.js"></script>
+      <script src="deps.js"></script>
+
+    
+   </head>
+   
+   <body>
+     <div id='blockly_area' style="height: 480px; width: 800px;" ></div>
+     <button id="generateXML" style="height:100px;width:200px;">generate XML</button>
+     <textarea id="result" style="height: 480px; width: 800px;display:block;"></textarea>
+     <script>
+           goog.require("Blockly.JavaScript");
+           goog.require('Blockly.Msg.en');
+           goog.require('Sorter.Blocks');
+           goog.require('Sorter.ToolBox');
+
+     </script>
+     <script>
+          
+           const blockly =  Blockly.inject('blockly_area' ,{ 
+
+            toolbox: Sorter.ToolBox,
+
+            zoom:{ controls: true,
+                   startScale: 1.0,
+                   maxScale: 3,
+                   minScale: 0.3,
+                   scaleSpeed: 1.2
+                 }, 
+
+            grid:{ spacing: 20,
+                   length: 1,
+                   colour: '#ccc',
+                   snap: true
+                 },
+
+          });
+          
+          const generate_btn = document.getElementById('generateXML'),
+                textarea = document.getElementById('result') ;
+          generate_btn.onclick = ()=>{
+                 let xml = Blockly.Xml.workspaceToDom(blockly,true).innerHTML;
+                 xml = xml.replace(new RegExp(`\s?id\s*=\s*("|')(\s|.)*?("|')\s?`,'g'),'');//it must be id-free to avoid conflicts
+                 textarea.innerHTML += "\n"+xml;
+          }
+     </script>
+   </body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
